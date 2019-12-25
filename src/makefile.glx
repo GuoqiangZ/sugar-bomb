@@ -3,7 +3,7 @@ CC=g++
 CFLAGS=-c -DGLX -I./ -I../lib/graphics -I../lib/sound -I../lib/font-rendering -I../lib/png-decoder
 LIBS=-L/usr/lib/libX11.so -L/usr/lib/libXext.so.6 -lGLU -lGL -lm -lX11 -lasound
 
-OBJDIR=SugarBomb_tmp
+OBJDIR=../build/obj
 
 OBJAPP=$(OBJDIR)/Main.o $(OBJDIR)/Bomb.o $(OBJDIR)/Common.o $(OBJDIR)/GameMap.o $(OBJDIR)/HPBoard.o $(OBJDIR)/Monster.o $(OBJDIR)/Player.o $(OBJDIR)/Prop.o
 
@@ -17,18 +17,15 @@ OBJFONT=$(OBJDIR)/ysglfontdata.o
 
 OBJS=$(OBJAPP) $(OBJSIMPLEWIN) $(OBJSOUND) $(OBJPNG) $(OBJFONT)
 
-EXE=SugarBomb
+EXE=../build/SugarBomb
 
 $(EXE) : $(OBJDIR) $(OBJS)
 	$(CC) -o $(EXE) $(OBJS) $(LIBS)
-
-run :
-	$(EXE).app/Contents/MacOS/$(EXE)
+	cp -r images ../build/.
+	cp -r music ../build/.
 
 link :
 	$(CC) -o $(EXE) $(OBJS) $(LIBS)
-	mkdir -p $(EXE).app/Contents/MacOS
-	cp $(EXE) $(EXE).app/Contents/MacOS/.
 
 clean:
 	rm -r $(OBJDIR)
