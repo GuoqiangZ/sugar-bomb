@@ -1,0 +1,74 @@
+CC=g++
+
+CFLAGS=-c -DMACOSX -I./ -I../lib/graphics -I../lib/sound -I../lib/font-rendering -I../lib/png-decoder
+LIBS=-framework Cocoa -framework OpenGL
+
+OBJDIR=../build/obj
+
+OBJAPP=$(OBJDIR)/Main.o $(OBJDIR)/Bomb.o $(OBJDIR)/Common.o $(OBJDIR)/GameMap.o $(OBJDIR)/HPBoard.o $(OBJDIR)/Monster.o $(OBJDIR)/Player.o $(OBJDIR)/Prop.o
+
+OBJSIMPLEWIN=$(OBJDIR)/fssimplewindowobjc.o $(OBJDIR)/fssimplewindowcpp.o
+
+OBJSOUND=$(OBJDIR)/yssimplesound.o $(OBJDIR)/yssimplesound_macosx_cpp.o $(OBJDIR)/yssimplesound_macosx_objc.o
+
+OBJPNG=$(OBJDIR)/yspng.o $(OBJDIR)/yspngenc.o
+
+OBJFONT=$(OBJDIR)/ysglfontdata.o
+
+OBJS=$(OBJAPP) $(OBJSIMPLEWIN) $(OBJSOUND) $(OBJPNG) $(OBJFONT)
+
+EXE=../build/SugarBomb
+
+$(EXE).app/Contents/MacOS/$(EXE) : $(EXE)
+	mkdir -p $(EXE).app/Contents/MacOS
+	mkdir -p $(EXE).app/Contents/Resources
+	mv $(EXE) $(EXE).app/Contents/MacOS/.
+	cp -r images $(EXE).app/Contents/Resources/.
+	cp -r music $(EXE).app/Contents/Resources/.
+
+$(EXE) : $(OBJDIR) $(OBJS)
+	$(CC) -o $(EXE) $(OBJS) $(LIBS)
+
+run :
+	$(EXE).app/Contents/MacOS/$(EXE)
+
+link :
+	$(CC) -o $(EXE) $(OBJS) $(LIBS)
+	mkdir -p $(EXE).app/Contents/MacOS
+	cp $(EXE) $(EXE).app/Contents/MacOS/.
+
+clean:
+	rm -r $(OBJDIR)
+	rm -r $(EXE).app
+
+$(OBJDIR) :
+	mkdir -p $(OBJDIR)
+
+
+$(OBJDIR)/%.o : ./%.cpp
+	$(CC) -std=c++11 $? $(CFLAGS) -o $@
+
+$(OBJDIR)/fssimplewindowobjc.o : ../lib/graphics/macosx/fssimplewindowobjc.m
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/fssimplewindowcpp.o : ../lib/graphics/macosx/fssimplewindowcpp.cpp
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yssimplesound.o : ../lib/sound/yssimplesound.cpp
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yssimplesound_macosx_cpp.o : ../lib/sound/macosx/yssimplesound_macosx_cpp.cpp
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yssimplesound_macosx_objc.o : ../lib/sound/macosx/yssimplesound_macosx_objc.m
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yspng.o : ../lib/png-decoder/yspng.cpp
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yspngenc.o : ../lib/png-decoder/yspngenc.cpp
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/ysglfontdata.o : ../lib/font-rendering/ysglfontdata.c
+	$(CC) $? $(CFLAGS) -o $@
+

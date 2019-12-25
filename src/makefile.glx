@@ -1,0 +1,59 @@
+CC=g++
+
+CFLAGS=-c -DGLX -I./ -I../lib/graphics -I../lib/sound -I../lib/font-rendering -I../lib/png-decoder
+LIBS=-L/usr/lib/libX11.so -L/usr/lib/libXext.so.6 -lGLU -lGL -lm -lX11 -lasound
+
+OBJDIR=SugarBomb_tmp
+
+OBJAPP=$(OBJDIR)/Main.o $(OBJDIR)/Bomb.o $(OBJDIR)/Common.o $(OBJDIR)/GameMap.o $(OBJDIR)/HPBoard.o $(OBJDIR)/Monster.o $(OBJDIR)/Player.o $(OBJDIR)/Prop.o
+
+OBJSIMPLEWIN=$(OBJDIR)/fssimplewindow.o
+
+OBJSOUND=$(OBJDIR)/yssimplesound.o $(OBJDIR)/yssimplesound_linux_alsa.o
+
+OBJPNG=$(OBJDIR)/yspng.o $(OBJDIR)/yspngenc.o
+
+OBJFONT=$(OBJDIR)/ysglfontdata.o
+
+OBJS=$(OBJAPP) $(OBJSIMPLEWIN) $(OBJSOUND) $(OBJPNG) $(OBJFONT)
+
+EXE=SugarBomb
+
+$(EXE) : $(OBJDIR) $(OBJS)
+	$(CC) -o $(EXE) $(OBJS) $(LIBS)
+
+run :
+	$(EXE).app/Contents/MacOS/$(EXE)
+
+link :
+	$(CC) -o $(EXE) $(OBJS) $(LIBS)
+	mkdir -p $(EXE).app/Contents/MacOS
+	cp $(EXE) $(EXE).app/Contents/MacOS/.
+
+clean:
+	rm -r $(OBJDIR)
+
+$(OBJDIR) :
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o : ./%.cpp
+	$(CC) -std=c++11 $? $(CFLAGS) -o $@
+
+$(OBJDIR)/fssimplewindow.o : ../lib/graphics/linux/fssimplewindow.cpp
+	$(CC) -std=c++11 $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yssimplesound.o : ../lib/sound/yssimplesound.cpp
+	$(CC) -std=c++11 $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yssimplesound_linux_alsa.o : ../lib/sound/linux_alsa/yssimplesound_linux_alsa.cpp
+	$(CC) -std=c++11 $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yspng.o : ../lib/png-decoder/yspng.cpp
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/yspngenc.o : ../lib/png-decoder/yspngenc.cpp
+	$(CC) $? $(CFLAGS) -o $@
+
+$(OBJDIR)/ysglfontdata.o : ../lib/font-rendering/ysglfontdata.c
+	$(CC) $? $(CFLAGS) -o $@
+
