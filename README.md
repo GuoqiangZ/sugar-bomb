@@ -10,7 +10,7 @@ This game contains two players. The player can use the keyboard buttons to move 
 
 <h2>User Guide</h2>
 
-<h3>Role</h3>
+<h3>Player Control</h3>
 
 Player 1 controls the green drawf in the picture and Player 2 controls the purple one. The control keys are shown as below:
 
@@ -22,7 +22,7 @@ Player 1 controls the green drawf in the picture and Player 2 controls the purpl
 | MOVE RIGHT | `D` | `RIGHT` |
 | PLACE BOMB | `TAB` | `ENTER` |
 
-A role is initialized with 5 HP points and speed level 2. A role dies when it loses all the HP points. Each role can place at most 5 unexploded bombs at the same time.
+A player is initialized with 5 HP points and speed level 2. A player dies when it loses all the HP points. Each player can place at most 5 unexploded bombs at the same time.
 
 <h3>Monster</h3>
 
@@ -36,7 +36,7 @@ A little silly neutral participant of the game. It moves randomly at will and ca
 
 On placing bomb, a bomb (represented by a sugar swirl) will appear on the grid where the player is standing.
 
-It usually takes 4 seconds before a bomb explodes. However, a bomb can detonate other nearby bombs under its blast wave (represented by rotating sugar swirls), making the waiting time smaller than 4 seconds. The blast wave can also introduces one HP point lose to a role, kill a monster and destroy a box/prop. The wave will be blocked when it reaches an obstacle (either a box or a block).
+It usually takes 4 seconds before a bomb explodes. However, a bomb can detonate other nearby bombs under its blast wave (represented by rotating sugar swirls), making the waiting time smaller than 4 seconds. The blast wave can also introduces one HP point lose for a player, kill a monster and destroy a box/prop. The wave will be blocked when it reaches an obstacle (either a box or a block).
 
 <p align="center">
   <img src="screenshots/bomb_explosion.png" width="600" alt="Screenshot"/> 
