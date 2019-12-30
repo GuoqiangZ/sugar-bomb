@@ -29,6 +29,7 @@ link :
 
 clean:
 	rm -r $(OBJDIR)
+	rm $(EXE)
 
 $(OBJDIR) :
 	mkdir -p $(OBJDIR)
